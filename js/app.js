@@ -26,14 +26,15 @@ const cardsToShuffle = Array.from(cards);
 
 /*
  * Display the cards on the page
- *   - add each card's HTML to the page
  */
 
-/*shuffle the list of cards using the provided "shuffle" method below
+//shuffle the list of cards using the provided "shuffle" method below
+const shuffledCards = shuffle(cardsToShuffle);
 
 
 //loop through each card and create its HTML (#classes: match open show ---> add or remove when clicking/)
 
+//add each card's HTML to the page
 
 
 /*
