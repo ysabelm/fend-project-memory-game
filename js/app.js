@@ -31,7 +31,13 @@ const cardsToShuffle = Array.from(cards);
 //shuffle the list of cards using the provided "shuffle" method below
 const shuffledCards = shuffle(cardsToShuffle);
 
+//Using deck (the parent) to append new childs e.g. the shuffled cards
 
+const deck = document.querySelector('.deck');
+
+for (card of shuffledCards) {
+    deck.appendChild(card);
+}
 //loop through each card and create its HTML (#classes: match open show ---> add or remove when clicking/)
 
 //add each card's HTML to the page
