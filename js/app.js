@@ -21,6 +21,8 @@ function shuffle(array) {
 
 const cards = document.querySelectorAll('.deck li');//It's a NodeList and shuffle function requires an array
 
+//From a list of cards to an array
+const cardsToShuffle = Array.from(cards);
 
 /*
  * Display the cards on the page
