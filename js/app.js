@@ -19,17 +19,17 @@ function shuffle(array) {
  * Create a list that holds all of your cards
  */
 
-const cards = document.querySelectorAll('.deck li');//It's a NodeList and shuffle function requires an array
+const cards = document.querySelectorAll('.deck li'); //It's a NodeList and shuffle function requires an array
 
 //From a list of cards to an array
-const cardsToShuffle = Array.from(cards);
+const cardsArray = Array.from(cards);
 
 /*
  * Display the cards on the page
  */
 
 //shuffle the list of cards using the provided "shuffle" method below
-const shuffledCards = shuffle(cardsToShuffle);
+const shuffledCards = shuffle(cardsArray);
 
 //Using deck (the parent) to append new childs e.g. the shuffled cards
 
@@ -38,10 +38,20 @@ const deck = document.querySelector('.deck');
 for (card of shuffledCards) {
     deck.appendChild(card);
 }
-//loop through each card and create its HTML (#classes: match open show ---> add or remove when clicking/)
 
+//classes: open show ---> add or remove when clicking
 //add each card's HTML to the page
+$('.deck').on('click', '.card', handler)
 
+function handler(event) {
+    $(this).toggleClass('open show');
+};
+
+//event.target gives us direct access to the element that is clicked
+
+
+//Set an empty array of toggled cards
+let toggledCards = [];
 
 /*
  * set up the event listener for a card. If a card is clicked:
@@ -53,5 +63,3 @@ for (card of shuffledCards) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-
-
