@@ -23,6 +23,8 @@ const cards = document.querySelectorAll('.deck li'); //It's a NodeList and shuff
 
 //From a list of cards to an array
 const cardsArray = Array.from(cards);
+//Set an empty array of opened cards
+let openedCards = [];
 
 /*
  * Display the cards on the page
@@ -41,17 +43,15 @@ for (card of shuffledCards) {
 
 //classes: open show ---> add or remove when clicking
 //add each card's HTML to the page
-$('.deck').on('click', '.card', handler)
+$('.deck').on('click', '.card', handler) //The handler "knows" that any .card is e.target
 
-function handler(event) {
-    $(this).toggleClass('open show');
+function handler() {
+    $(this).toggleClass('open show'); //(this) refers to the clicked card
+    openedCards.push(this);
 };
 
-//event.target gives us direct access to the element that is clicked
 
 
-//Set an empty array of toggled cards
-let toggledCards = [];
 
 /*
  * set up the event listener for a card. If a card is clicked:
