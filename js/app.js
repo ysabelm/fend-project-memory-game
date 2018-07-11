@@ -47,20 +47,21 @@ let matchedCards = []; // This array helps to count the number of matched cards 
 $(deck).on('click', '.card', handler) //The handler "knows" that any .card is e.target
 
 function handler() {
-    //(this) refers to the clicked card
-    
+    const clickedCard = this;
+    const firstCard = openedCards[0];
+
     // There is one opened card
     if (openedCards.length === 1) {
-        $(this).toggleClass('open show disable'); // disable class prevents the card to be clicked twice
+        $(this).toggleClass('open show disable'); // A disable class prevents the card to be clicked twice
         openedCards.push(this);
 
         //Do the 2 cards match?
-        if (this.innerHTML === openedCards[0].innerHTML) {
+        if (clickedCard.innerHTML === firstCard.innerHTML) {
             $(this).toggleClass('match');
-            $(openedCards[0]).toggleClass('match');
+            $(firstCard).toggleClass('match');
 
             // Adds the 2 matched cards in the array
-            matchedCards.push(this, openedCards[0]);
+            matchedCards.push(clickedCard, firstCard);
 
             openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
 
@@ -68,14 +69,15 @@ function handler() {
             // To avoid that cards turn too quickly, use the setTimeout function
             setTimeout(function () {
                 $(this).toggleClass('open show disable');
-                $(openedCards[0]).toggle('open show disable');
+                $(firstCard).toggle('open show disable');
+                
                 openedCards = []; // Has to be included in the function; otherwise it still fills up
             }, 400);
         }
 
     } else {
         //There is no opened card
-        $(this).toggleClass('open show');
+        $(this).toggleClass('open show disable');
         openedCards.push(this);
     }
 };
