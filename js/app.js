@@ -18,7 +18,9 @@ function shuffle(array) {
 /*
  * Create a list that holds all of your cards
  */
-// Reset the deck e.g no card with class 'open', 'show' and 'match'
+// Clear the deck e.g no card with class 'open', 'show' and 'match'
+
+
 
 const cards = document.querySelectorAll('.deck li'); //It's a NodeList and shuffle function requires an array
 
@@ -44,6 +46,7 @@ for (card of shuffledCards) {
     deck.appendChild(card);
 }
 
+
 //classes: open show ---> add or remove when clicking
 //add each card's HTML to the page
 
@@ -64,11 +67,18 @@ function handler() {
             matchedCards.push(this, openedCards[0]);
 
             openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
-        } else {
-            $(this).toggleClass('open show');
-            $(openedCards[0]).toggleClass('open show');
 
-            openedCards = [];
+            // Do all cards match?
+            endGame();
+
+        } else {
+
+            // To avoid that cards turn too quickly, use the setTimeout function
+            setTimeout(function () {
+                $(this).toggleClass('open show');
+                $(openedCards[0]).toggleClass('open show');
+                openedCards = []; // Has to be included in the function; otherwise it still fills up
+            }, 400);
         }
 
     } else {
@@ -79,7 +89,7 @@ function handler() {
 };
 
 function endGame() {
-    if(matchedCards.length === cards.length) {
+    if (matchedCards.length === cards.length) {
         alert('Bravo, you did it!');
     }
 }
@@ -95,3 +105,13 @@ function endGame() {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+function init() {
+    function clearDeck() {
+        for (let i = 0; i < cards.length; i++) {
+            cards[i].toggleClass('show open match');
+        }
+    }
+    // Adds handler (or click) function
+    handler();
+}
