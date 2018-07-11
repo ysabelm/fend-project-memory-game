@@ -18,57 +18,55 @@ function shuffle(array) {
 /*
  * Create a list that holds all of your cards
  */
-// Clear the deck e.g no card with class 'open', 'show' and 'match'
 
-
-
-const cards = document.querySelectorAll('.deck li'); //It's a NodeList and shuffle function requires an array
-
+const cards = document.querySelectorAll('.card'); //It's a NodeList and shuffle function requires an array
 
 //From a list of cards to an array
 const cardsArray = Array.from(cards);
-//Set an empty array of opened cards
-let openedCards = [];
-let matchedCards = []; // This array helps to count the number of matched cards to know when the game is over
-
-/*
- * Display the cards on the page
- */
 
 //shuffle the list of cards using the provided "shuffle" method below
 const shuffledCards = shuffle(cardsArray);
 
 //Using deck (the parent) to append new childs e.g. the shuffled cards
-
 const deck = document.querySelector('.deck');
 
 for (card of shuffledCards) {
     deck.appendChild(card);
 }
 
-
-//classes: open show ---> add or remove when clicking
+/*
+ * Display the cards on the page
+ */
+//classes: open show disable---> add or remove when clicking
 //add each card's HTML to the page
+
+//Set an empty array of opened cards
+let openedCards = [];
+let matchedCards = []; // This array helps to count the number of matched cards to know when the game is over
 
 $('.deck').on('click', '.card', handler) //The handler "knows" that any .card is e.target
 
 function handler() {
-    const previousCard = openedCards[0]; 
+    //(this) refers to the clicked card
+    const previousCard = openedCards[0];
+
     // There is one opened card
     if (openedCards.length === 1) {
-        $(this).toggleClass('open show'); //(this) refers to the clicked card
+        $(this).toggleClass('open show disable'); // disable class prevents the card to be clicked twice
         openedCards.push(this);
 
         //Do the 2 cards match?
-        matching(this, previousCard);
+        matching();
 
     } else {
         //There is no opened card
-        $(this).toggleClass('open show');
+        $(this).toggleClass('open show disable');
         openedCards.push(this);
     }
 };
 
+
+// The game ends when all cards match
 function endGame() {
     if (matchedCards.length === cards.length) {
         alert('Bravo, you did it!');
@@ -90,22 +88,21 @@ function endGame() {
 // Start the game
 
 function init() {
-    function clearDeck() {
-        for (let i = 0; i < cards.length; i++) {
-            cards[i].removeClass('show', 'open', 'match');
-        }
-    }
+    $(".card").attr("class", "card");
+
     // Adds handler (or click) function
     handler();
 }
 
-function matching(this, previousCard) {
+function matching() {
+    const previousCard = openedCards[0];
+
     if (this.innerHTML === previousCard.innerHTML) {
         $(this).toggleClass('match');
-        previousCard.toggleClass('match');
+        $(previousCard).toggleClass('match');
 
         // Adds the 2 matched cards in the array
-        matchedCards.push(this, openedCards[0]);
+        matchedCards.push(this, previousCard);
 
         openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
 
@@ -116,9 +113,10 @@ function matching(this, previousCard) {
 
         // To avoid that cards turn too quickly, use the setTimeout function
         setTimeout(function () {
-            $(this).toggleClass('open show');
-            $(openedCards[0]).toggleClass('open show');
+            $(this).toggleClass('open show disable');
+            $(previousCard).toggle('open show disable');
             openedCards = []; // Has to be included in the function; otherwise it still fills up
         }, 400);
     }
 }
+
