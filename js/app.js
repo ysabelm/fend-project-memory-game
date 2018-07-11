@@ -78,7 +78,11 @@ function handler() {
     }
 };
 
-
+function endGame() {
+    if(matchedCards.length === cards.length) {
+        alert('Bravo, you did it!');
+    }
+}
 
 
 /*
