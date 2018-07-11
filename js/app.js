@@ -18,13 +18,16 @@ function shuffle(array) {
 /*
  * Create a list that holds all of your cards
  */
+// Reset the deck e.g no card with class 'open', 'show' and 'match'
 
 const cards = document.querySelectorAll('.deck li'); //It's a NodeList and shuffle function requires an array
+
 
 //From a list of cards to an array
 const cardsArray = Array.from(cards);
 //Set an empty array of opened cards
 let openedCards = [];
+let matchedCards = []; // This array helps to count the number of matched cards to know when the game is over
 
 /*
  * Display the cards on the page
@@ -43,11 +46,36 @@ for (card of shuffledCards) {
 
 //classes: open show ---> add or remove when clicking
 //add each card's HTML to the page
+
 $('.deck').on('click', '.card', handler) //The handler "knows" that any .card is e.target
 
 function handler() {
-    $(this).toggleClass('open show'); //(this) refers to the clicked card
-    openedCards.push(this);
+    // There is one opened card
+    if (openedCards.length === 1) {
+        $(this).toggleClass('open show'); //(this) refers to the clicked card
+        openedCards.push(this);
+
+        //Do the 2 cards match?
+        if (this.innerHTML === openedCards[0].innerHTML) {
+            $(this).toggleClass('match');
+            $(openedCards[0]).toggleClass('match');
+
+            // Adds the 2 matched cards in the array
+            matchedCards.push(this, openedCards[0]);
+
+            openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
+        } else {
+            $(this).toggleClass('open show');
+            $(openedCards[0]).toggleClass('open show');
+
+            openedCards = [];
+        }
+
+    } else {
+        //There is no opened card
+        $(this).toggleClass('open show');
+        openedCards.push(this);
+    }
 };
 
 
