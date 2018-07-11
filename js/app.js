@@ -53,33 +53,14 @@ for (card of shuffledCards) {
 $('.deck').on('click', '.card', handler) //The handler "knows" that any .card is e.target
 
 function handler() {
+    const previousCard = openedCards[0]; 
     // There is one opened card
     if (openedCards.length === 1) {
         $(this).toggleClass('open show'); //(this) refers to the clicked card
         openedCards.push(this);
 
         //Do the 2 cards match?
-        if (this.innerHTML === openedCards[0].innerHTML) {
-            $(this).toggleClass('match');
-            $(openedCards[0]).toggleClass('match');
-
-            // Adds the 2 matched cards in the array
-            matchedCards.push(this, openedCards[0]);
-
-            openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
-
-            // Do all cards match?
-            endGame();
-
-        } else {
-
-            // To avoid that cards turn too quickly, use the setTimeout function
-            setTimeout(function () {
-                $(this).toggleClass('open show');
-                $(openedCards[0]).toggleClass('open show');
-                openedCards = []; // Has to be included in the function; otherwise it still fills up
-            }, 400);
-        }
+        matching(this, previousCard);
 
     } else {
         //There is no opened card
@@ -106,12 +87,38 @@ function endGame() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+// Start the game
+
 function init() {
     function clearDeck() {
         for (let i = 0; i < cards.length; i++) {
-            cards[i].toggleClass('show open match');
+            cards[i].removeClass('show', 'open', 'match');
         }
     }
     // Adds handler (or click) function
     handler();
+}
+
+function matching(this, previousCard) {
+    if (this.innerHTML === previousCard.innerHTML) {
+        $(this).toggleClass('match');
+        previousCard.toggleClass('match');
+
+        // Adds the 2 matched cards in the array
+        matchedCards.push(this, openedCards[0]);
+
+        openedCards = []; // Reinitialize to avoid adding other cards that therefore won't respond match condition (2 cards)
+
+        // Do all cards match?
+        endGame();
+
+    } else {
+
+        // To avoid that cards turn too quickly, use the setTimeout function
+        setTimeout(function () {
+            $(this).toggleClass('open show');
+            $(openedCards[0]).toggleClass('open show');
+            openedCards = []; // Has to be included in the function; otherwise it still fills up
+        }, 400);
+    }
 }
