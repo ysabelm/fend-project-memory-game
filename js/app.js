@@ -18,18 +18,19 @@ function shuffle(array) {
 /*
  * Create a list that holds all of your cards
  */
-const cardsList = document.querySelectorAll(".card");
+const cardsList = document.querySelectorAll('.card');
 const cardsArray = Array.from(cardsList); // Shuffle function requires an array
 
 // Display the cards
 let displayCard = function () {
-    this.classList.toggle("open");
-    this.classList.toggle("show");
-    this.classList.toggle("disable");
+    this.classList.toggle('open');
+    this.classList.toggle('show');
+    this.classList.toggle('disable');
 };
 // Adds a click event on each card using a loop
 for (card of cardsList) {
-    card.addEventListener("click", displayCard);
+    card.addEventListener('click', displayCard);
+    card.addEventListener('click', openCard);
 };
 
 // remove classes from each card before starting the game
@@ -39,7 +40,7 @@ for (card of cardsList) {
     [].forEach.call(cardsList, function (item) {
         deck.appendChild(item);
     });
-    card.classList.remove("show", "open", "match", "disable");
+    card.classList.remove('show', 'open', 'match', 'disable');
 }
 
 //shuffle the list of cards using the provided "shuffle" method below
@@ -48,4 +49,46 @@ const shuffledCards = shuffle(cardsArray);
 //Using deck (the parent) to append new childs e.g. the shuffled cards
 for (card of shuffledCards) {
     deck.appendChild(card);
+}
+
+
+/*
+ * Compare the cards to test the matching
+ */
+
+// Set the arrays containing cards to empty
+let openedCards = []; // Set an empty array of opened cards
+let matchedCards = []; // This array helps to count the number of matched cards to know when the game is over
+
+/// Add and compare 2 cards
+function openCard() {
+    openedCards.push(this);
+
+    if (openedCards.length === 2) {
+        // Compare the 2 cards
+        testMatching();
+
+    } else {
+        openedCards.push(this);
+
+        // Compare the 2 cards
+        testMatching();
+    }
+};
+
+function testMatching() {
+    if (openedCards[0].firstElementChild.className === openedCards[1].firstElementChild.className) {
+        openedCards[0].classList.toggle('match');
+        openedCards[1].classList.toggle('match');
+        // Adds the 2 matched cards in the array
+        matchedCards.push(openedCards[0]);
+        matchedCards.push(openedCards[1]);
+
+        openedCards = [];
+    } else {
+        openedCards[0].classList.toggle('open', 'show', 'disable');
+        openedCards[1].classList.toggle('open', 'show', 'disable');
+
+        openedCards = [];
+    }
 }
