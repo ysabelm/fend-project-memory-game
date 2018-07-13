@@ -21,37 +21,35 @@ function shuffle(array) {
 const cardsList = document.querySelectorAll('.card');
 const cardsArray = Array.from(cardsList); // Shuffle function requires an array
 
-// Display the cards
-let displayCard = function () {
-    this.classList.toggle('open');
-    this.classList.toggle('show');
-    this.classList.toggle('disable');
-};
-// Adds a click event on each card using a loop
-for (card of cardsList) {
-    card.addEventListener('click', displayCard);
-    card.addEventListener('click', openCard);
-};
-
 // remove classes from each card before starting the game
 const deck = document.querySelector('.deck');
-for (card of cardsList) {
+for (card of cardsArray) {
     deck.innerHTML = "";
-    [].forEach.call(cardsList, function (item) {
+    [].forEach.call(cardsArray, function (item) {
         deck.appendChild(item);
     });
     card.classList.remove('show', 'open', 'match', 'disable');
 }
 
-//shuffle the list of cards using the provided "shuffle" method below
-const shuffledCards = shuffle(cardsArray);
+//shuffle the array of cards using the provided "shuffle" method below
+const cards = shuffle(cardsArray);
 
 //Using deck (the parent) to append new childs e.g. the shuffled cards
-for (card of shuffledCards) {
+for (card of cards) {
     deck.appendChild(card);
 }
+// Display the cards
+let displayCard = function () {
+    this.classList.add('open');
+    this.classList.add('show');
+    this.classList.add('disable');
+};
 
-
+// Adds a click event on each card using a loop
+for (card of cards) {
+    card.addEventListener('click', displayCard);
+    card.addEventListener('click', openCard);
+};
 /*
  * Compare the cards to test the matching
  */
@@ -63,21 +61,17 @@ let matchedCards = []; // This array helps to count the number of matched cards 
 /// Add and compare 2 cards
 function openCard() {
     openedCards.push(this);
-
+    console.log(openedCards);
     if (openedCards.length === 2) {
         // Compare the 2 cards
         testMatching();
-
-    } else {
-        openedCards.push(this);
-
-        // Compare the 2 cards
-        testMatching();
+        console.log(openedCards);
+        console.log(matchedCards);
     }
 };
 
 function testMatching() {
-    if (openedCards[0].firstElementChild.className === openedCards[1].firstElementChild.className) {
+    if (openedCards[0].innerHTML === openedCards[1].innerHTML) {
         openedCards[0].classList.toggle('match');
         openedCards[1].classList.toggle('match');
         // Adds the 2 matched cards in the array
@@ -86,9 +80,13 @@ function testMatching() {
 
         openedCards = [];
     } else {
-        openedCards[0].classList.toggle('open', 'show', 'disable');
-        openedCards[1].classList.toggle('open', 'show', 'disable');
+        setTimeout(() => {
+            openedCards[0].classList.remove('open', 'show', 'disable');
+            openedCards[1].classList.remove('open', 'show', 'disable');
 
-        openedCards = [];
+            openedCards = [];
+
+        }, 600);
     }
 }
+
