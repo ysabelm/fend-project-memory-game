@@ -85,6 +85,7 @@ h1 {
 
 .deck .card.disable {
     pointer-events: none;
+    opacity: 0.9;
 }
 
 /*
