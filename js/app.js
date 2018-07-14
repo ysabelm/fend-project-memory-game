@@ -64,7 +64,7 @@ let matchedCards = []; // This array helps to count the number of matched cards 
 /// Add and compare 2 cards - Start movesCounter
 function openCard() {
     openedCards.push(this);
-    if (openedCards.length === 2) {
+    if (openedCards.length == 2) {
         // Compare the 2 cards
         testMatching();
         movesCounter();
@@ -72,7 +72,7 @@ function openCard() {
 };
 
 function testMatching() {
-    if (openedCards[0].innerHTML === openedCards[1].innerHTML) {
+    if (openedCards[0].innerHTML == openedCards[1].innerHTML) {
         openedCards[0].classList.toggle('match');
         openedCards[1].classList.toggle('match');
         // Adds the 2 matched cards in the array
@@ -99,7 +99,7 @@ const timer = document.querySelector(".timer");
 let interval;
 
 function startTimer() {
-    interval = setInterval(function () {
+    liveTimer = setInterval(function () {
         if (seconds < 10) {
             timer.innerHTML = `${minutes}:0${seconds}`;
         } else {
@@ -123,7 +123,7 @@ seconds = 0;
 minutes = 0;
 hours = 0;
 timer.innerHTML = "0:00";
-clearInterval(interval);
+clearInterval(liveTimer);
 
 // Set the moves counter
 let moves = 0;
@@ -132,24 +132,19 @@ function movesCounter() {
     moves++
     let counter = document.querySelector('.moves');
     counter.innerHTML = moves;
-}
-
-// Set the rating with stars
-function lowerStars() {
-    let stars = document.querySelectorAll('.stars li');
-    for (star of stars) {
-        if (star.style.display !== 'none') {
-            star.style.display = 'none';
-            break;
+    // Set the rating with stars
+    let stars = document.querySelectorAll(".fa-star");
+    if (moves > 10 && moves <= 15) {
+        for (i = 0; i < 3; i++) {
+            if (i > 1) {
+                stars[i].style.visibility = 'hidden';
+            }
+        }
+    } else if (moves > 15) {
+        for (i = 0; i < 3; i++) {
+            if (i > 0) {
+                stars[i].style.visibility = 'hidden';
+            }
         }
     }
 }
-lowerStars();
-lowerStars();
-
-if (moves > 8 && moves <= 12) {
-    lowerStars();
-} else if (moves > 12) {
-    lowerStars();
-}
-
