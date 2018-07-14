@@ -38,6 +38,35 @@ const cards = shuffle(cardsArray);
 for (card of cards) {
     deck.appendChild(card);
 }
+
+// Adds a timer and let it start
+let seconds = 0, minutes = 0, hours = 0;
+const timer = document.querySelector(".timer");
+let interval;
+function startTimer(){
+    interval = setInterval(function(){
+        if(seconds < 10) {
+            timer.innerHTML = `${minutes}:0${seconds}`;
+        } else {
+            timer.innerHTML = `${minutes}:${seconds}`;
+        }
+        seconds++;
+        if(seconds == 60){
+            minutes++;
+            seconds=0;
+        }
+        if(minutes == 60){
+            hours++;
+            minutes = 0;
+        }
+    },1000);
+}
+startTimer();
+
+
+
+
+
 // Display the cards
 let displayCard = function () {
     this.classList.add('open');
@@ -89,4 +118,3 @@ function testMatching() {
         }, 600);
     }
 }
-
