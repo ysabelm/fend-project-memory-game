@@ -1,7 +1,6 @@
 // Shuffle function from http://stackoverflow.com/a/2450976 provided by the project
-
-function shuffle(array) {
-    var currentIndex = array.length,
+shuffle = (array) => {
+    let currentIndex = array.length,
         temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
@@ -11,57 +10,54 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
-/*
- * Create a list that holds all of your cards
- */
-const cardsList = document.querySelectorAll('.card');
-const cardsArray = Array.from(cardsList); // Shuffle function requires an array
+// Declare all variables - Global scope
+const cardsList = document.querySelectorAll('.card'),
+    cardsArray = Array.from(cardsList), // Shuffle function requires an array
+    deck = document.querySelector('.deck');
 
-// remove classes from each card before starting the game
-const deck = document.querySelector('.deck');
-for (card of cardsArray) {
-    deck.innerHTML = "";
-    [].forEach.call(cardsArray, function (item) {
-        deck.appendChild(item);
-    });
-    card.classList.remove('show', 'open', 'match', 'disable');
+let cards = shuffle(cardsArray), //shuffle the array of cards
+    openedCards = [], // Set an empty array of opened cards
+    matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
+    moves = 0; // Set the moves counter
+    counter = document.querySelector('.moves');
+    stars = document.querySelectorAll(".fa-star");
+
+const timer = document.querySelector(".timer");
+let seconds = 0,
+    minutes = 0,
+    hours = 0,
+    interval;
+
+
+// 1. Remove classes at the beginning of the game
+removeClasses = () => {
+    for (card of cards) {
+        deck.innerHTML = "";
+        [].forEach.call(cards, function (item) {
+            deck.appendChild(item);
+        });
+        card.classList.remove('show', 'open', 'match', 'disable');
+    }
 }
+removeClasses();
 
-//shuffle the array of cards using the provided "shuffle" method below
-const cards = shuffle(cardsArray);
-
-//Using deck (the parent) to append new childs e.g. the shuffled cards
-for (card of cards) {
-    deck.appendChild(card);
-}
-
-
-
-// Display the cards
-let displayCard = function () {
+// 3. Display the cards
+displayCard = function () {
     this.classList.add('open');
     this.classList.add('show');
     this.classList.add('disable');
 };
 
-// Adds a click event on each card using a loop
+// 4. Adds a click event on each card using a loop
 for (card of cards) {
     card.addEventListener('click', displayCard);
     card.addEventListener('click', openCard);
 };
-/*
- * Compare the cards to test the matching
- */
 
-// Set the arrays containing cards to empty
-let openedCards = []; // Set an empty array of opened cards
-let matchedCards = []; // This array helps to count the number of matched cards to know when the game is over
-
-/// Add and compare 2 cards - Start movesCounter
+// 5. Add and compare 2 cards - Start movesCounter
 function openCard() {
     openedCards.push(this);
     if (openedCards.length == 2) {
@@ -71,7 +67,8 @@ function openCard() {
     }
 };
 
-function testMatching() {
+// 5.1  we set a test of matching cards otherwise we turn them over
+testMatching = () => {
     if (openedCards[0].innerHTML == openedCards[1].innerHTML) {
         openedCards[0].classList.toggle('match');
         openedCards[1].classList.toggle('match');
@@ -91,14 +88,28 @@ function testMatching() {
     }
 }
 
-// Adds a timer and let it start
-let seconds = 0,
-    minutes = 0,
-    hours = 0;
-const timer = document.querySelector(".timer");
-let interval;
+// 5.2 we need to count each moves in order to set a rating of stars
+movesCounter = () => {
+    moves++
+    counter.innerHTML = moves;
+    // Set the rating with stars
+    if (moves > 10 && moves <= 15) {
+        for (i = 0; i < 3; i++) {
+            if (i > 1) {
+                stars[i].style.visibility = 'hidden';
+            }
+        }
+    } else if (moves > 15) {
+        for (i = 0; i < 3; i++) {
+            if (i > 0) {
+                stars[i].style.visibility = 'hidden';
+            }
+        }
+    }
+}
 
-function startTimer() {
+// 6. we set a timer to get the game duration
+startTimer = () => {
     liveTimer = setInterval(function () {
         if (seconds < 10) {
             timer.innerHTML = `${minutes}:0${seconds}`;
@@ -118,33 +129,12 @@ function startTimer() {
 }
 startTimer();
 
-// Reset timer
-seconds = 0;
-minutes = 0;
-hours = 0;
-timer.innerHTML = "0:00";
-clearInterval(liveTimer);
-
-// Set the moves counter
-let moves = 0;
-
-function movesCounter() {
-    moves++
-    let counter = document.querySelector('.moves');
-    counter.innerHTML = moves;
-    // Set the rating with stars
-    let stars = document.querySelectorAll(".fa-star");
-    if (moves > 10 && moves <= 15) {
-        for (i = 0; i < 3; i++) {
-            if (i > 1) {
-                stars[i].style.visibility = 'hidden';
-            }
-        }
-    } else if (moves > 15) {
-        for (i = 0; i < 3; i++) {
-            if (i > 0) {
-                stars[i].style.visibility = 'hidden';
-            }
-        }
-    }
+// 7. we reset the timer
+resetTimer = () => {
+    seconds = 0;
+    minutes = 0;
+    hours = 0;
+    timer.innerHTML = "0:00";
+    clearInterval(liveTimer);
 }
+
