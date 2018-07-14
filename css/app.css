@@ -85,7 +85,7 @@ h1 {
 
 .deck .card.disable {
     pointer-events: none;
-    opacity: 0.9;
+    opacity: 0.9dis;
 }
 
 /*
@@ -93,6 +93,7 @@ h1 {
  */
 
 .score-panel {
+    display: flex;
     text-align: left;
     width: 345px;
     margin-bottom: 10px;
@@ -111,6 +112,14 @@ h1 {
 }
 
 .score-panel .restart {
-    float: right;
+    margin-left: 150px;
     cursor: pointer;
+}
+
+.score-panel .moves {
+    margin: 0 5px;
+}
+
+.score-panel .timer {
+    margin: 0 10px;
 }
