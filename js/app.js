@@ -138,3 +138,22 @@ resetTimer = () => {
     clearInterval(liveTimer);
 }
 
+// 8. Reset timer, moves number, rating and shuffle cards at the beginnig of a game
+function resetGame() {
+    // shuffle cards
+    cards = shuffle(cards);
+    // remove all classes from each card
+    removeClasses();
+    // reset moves
+    moves = 0;
+    counter.innerHTML = moves;
+    // reset rating
+    for (var i = 0; i < stars.length; i++) {
+        stars[i].style.visibility = "visible";
+    }
+    //reset timer
+    resetTimer();
+}
+
+// 9. Adds an click event on refresh (restart) element
+document.querySelector('.restart').addEventListener('click', resetGame);
