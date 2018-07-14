@@ -130,7 +130,26 @@ let moves = 0;
 
 function movesCounter() {
     moves++
-    let counter = document.querySelector(".moves");
+    let counter = document.querySelector('.moves');
     counter.innerHTML = moves;
+}
+
+// Set the rating with stars
+function lowerStars() {
+    let stars = document.querySelectorAll('.stars li');
+    for (star of stars) {
+        if (star.style.display !== 'none') {
+            star.style.display = 'none';
+            break;
+        }
+    }
+}
+lowerStars();
+lowerStars();
+
+if (moves > 8 && moves <= 12) {
+    lowerStars();
+} else if (moves > 12) {
+    lowerStars();
 }
 
