@@ -21,21 +21,19 @@ const cardsList = document.querySelectorAll('.card'),
 let cards = shuffle(cardsArray), //shuffle the array of cards
     openedCards = [], // Set an empty array of opened cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
-    moves = 0; // Set the moves counter
-    counter = document.querySelector('.moves');
-    stars = document.querySelectorAll(".fa-star");
+    moves = 0, // Set the moves counter
+    counter = document.querySelector('.moves'),
+    stars = document.querySelectorAll('.fa-star');
     
 
-const timer = document.querySelector(".timer");
+const timer = document.querySelector('.timer');
 
 let seconds = 0,
     minutes = 0,
     hours = 0,
     interval,
     timeDuration,
-    starRating = document.querySelector(".stars").innerHTML;
-
-    modal = document.querySelector(".overlay");
+    starRating = document.querySelector('.stars').innerHTML,
 
 
 // 1. Remove classes at the beginning of the game
@@ -63,15 +61,26 @@ for (card of cards) {
     card.addEventListener('click', openCard);
 };
 
-// 4. Add and compare 2 cards - Start movesCounter
+// 4. Add and compare 2 cards - Start movesCounter, timer until all cards match.
 function openCard() {
     openedCards.push(this);
+    
+    let showModal = document.querySelector('.overlay');
+    
     if (openedCards.length == 2) {
         // Compare the 2 cards
         testMatching();
         movesCounter();
     }
-};
+    if (matchedCards.length === 2){   // TODO : attention remettre 16 pour la review
+        
+        showModal.classList.add('show');
+       
+        stopTimer();
+        messageScore();
+        
+     }
+}
 
 // 4.1  we set a test of matching cards otherwise we turn them over
 testMatching = () => {
@@ -137,7 +146,13 @@ startTimer = () => {
 }
 startTimer();
 
-// 6. we reset the timer
+// 6. we stop the timer if the game is finished
+stopTimer = () => {
+    clearInterval(liveTimer);
+    timeDuration = timer.innerHTML;
+}
+
+// 7. we reset the timer
 resetTimer = () => {
     seconds = 0;
     minutes = 0;
@@ -145,14 +160,6 @@ resetTimer = () => {
     timer.innerHTML = "0:00";
     clearInterval(liveTimer);
 }
-
-// 7. we stop the timer at the end of the game 
-stopTimer = () => {
-    if (matchedCards.length == 16) {
-        clearInterval(liveTimer);
-    };
-};
-stopTimer();
 
 // 8. Reset timer, moves number, rating and shuffle cards at the beginnig of a game
 function resetGame() {
@@ -214,3 +221,12 @@ createHtmlModal = () => {
     
 };
 createHtmlModal();
+
+// 11. Show output for moves, timeDuration and starRating
+messageScore = () => {
+    
+    //showing move, rating, time on modal
+    document.querySelector(".movesNumber").innerHTML = 'Moves : ' + moves;
+    document.querySelector(".starRating").innerHTML = 'Stars : ' + starRating;
+    document.querySelector(".timeDuration").innerHTML = 'Time :  ' + timeDuration;
+}
