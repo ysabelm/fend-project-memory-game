@@ -16,23 +16,26 @@ shuffle = (array) => {
 // Declare all variables - Global scope
 const cardsList = document.querySelectorAll('.card'),
     cardsArray = Array.from(cardsList), // Shuffle function requires an array
-    deck = document.querySelector('.deck'),
-    closeCross = document.querySelector('.close');
+    deck = document.querySelector('.deck');
 
 let cards = shuffle(cardsArray), //shuffle the array of cards
     openedCards = [], // Set an empty array of opened cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
-    moves = 0, // Set the moves counter
-    counter = document.querySelector('.moves'),
-    stars = document.querySelectorAll(".fa-star"),
-    seconds = 0,
-    minutes = 0,
-    hours = 0,
-    liveTimer,
-    modal = document.querySelector(".overlay");
+    moves = 0; // Set the moves counter
+    counter = document.querySelector('.moves');
+    stars = document.querySelectorAll(".fa-star");
+    
 
 const timer = document.querySelector(".timer");
 
+let seconds = 0,
+    minutes = 0,
+    hours = 0,
+    interval,
+    timeDuration,
+    starRating = document.querySelector(".stars").innerHTML;
+
+    modal = document.querySelector(".overlay");
 
 
 // 1. Remove classes at the beginning of the game
@@ -171,3 +174,43 @@ function resetGame() {
 // 9. Adds a click event on refresh (restart) element
 document.querySelector('.restart').addEventListener('click', resetGame);
 
+// 10. Create modal elements
+createHtmlModal = () => {
+    const container = document.querySelector('.container');
+    const modal = document.createElement('div');
+    modal.className = "overlay";
+    
+    const div = document.createElement('div');
+    div.className = "popup";
+    modal.append(div);
+
+    const h2 = document.createElement('h2');
+    h2.innerHTML = "Score of the game";
+    div.append(h2);
+
+    const a = document.createElement('a');
+    a.className = 'close';
+    a.href = '#';
+    a.innerHTML = 'x';
+    div.append(a);
+
+    const divChild = document.createElement('div');
+    divChild.className = 'result-score';
+    div.append(divChild);
+
+    const movesNumber = document.createElement('p');
+    movesNumber.className = 'movesNumber';
+    divChild.append(movesNumber);
+
+    const timeDuration = document.createElement('p');
+    timeDuration.className = 'timeDuration';
+    divChild.append(timeDuration);
+
+    const starRating = document.createElement('p');
+    starRating.className = 'starRating';
+    divChild.append(starRating);
+
+    container.append(modal);
+    
+};
+createHtmlModal();
