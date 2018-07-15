@@ -21,10 +21,10 @@ const cardsList = document.querySelectorAll('.card'),
 let cards = shuffle(cardsArray), //shuffle the array of cards
     openedCards = [], // Set an empty array of opened cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
-    moves = 0, // Set the moves counter
+    moves = 0, // Set the moves counter to empty
     counter = document.querySelector('.moves'),
     stars = document.querySelectorAll('.fa-star');
-    
+
 
 const timer = document.querySelector('.timer');
 
@@ -37,15 +37,15 @@ let seconds = 0,
 
 
 // 1. Remove classes at the beginning of the game
-removeClasses = () => {
-    for (card of cards) {
-        deck.innerHTML = "";
-        [].forEach.call(cards, function (item) {
-            deck.appendChild(item);
-        });
-        card.classList.remove('show', 'open', 'match', 'disable');
+    removeClasses = () => {
+        for (card of cards) {
+            deck.innerHTML = "";
+            [].forEach.call(cards, function (item) {
+                deck.appendChild(item);
+            });
+            card.classList.remove('show', 'open', 'match', 'disable');
+        }
     }
-}
 removeClasses();
 
 // 2. Display the cards
@@ -64,25 +64,25 @@ for (card of cards) {
 // 4. Add and compare 2 cards - Start movesCounter, timer until all cards match.
 function openCard() {
     openedCards.push(this);
-    
+
     let showModal = document.querySelector('.overlay');
-    
+
     if (openedCards.length == 2) {
         // Compare the 2 cards
         testMatching();
         movesCounter();
     }
-    if (matchedCards.length === 2){   // TODO : attention remettre 16 pour la review
-        
+    if (matchedCards.length === 16) {
+
         showModal.classList.add('show');
-       
+
         stopTimer();
         messageScore();
-        
-     }
+
+    }
 }
 
-// 4.1  we set a test of matching cards otherwise we turn them over
+// 4.1  Set a test of matching cards otherwise turn them over
 testMatching = () => {
     if (openedCards[0].innerHTML == openedCards[1].innerHTML) {
         openedCards[0].classList.toggle('match');
@@ -101,11 +101,10 @@ testMatching = () => {
 
         }, 600);
     }
-    stopTimer();
 }
 
 
-// 4.2 we need to count each moves in order to set a rating of stars
+// 4.2 Count each moves in order to set a rating of stars
 movesCounter = () => {
     moves++
     counter.innerHTML = moves;
@@ -125,7 +124,7 @@ movesCounter = () => {
     }
 }
 
-// 5. we set a timer to get the game duration
+// 5. Set a timer to get the game duration
 startTimer = () => {
     liveTimer = setInterval(function () {
         if (seconds < 10) {
@@ -146,13 +145,13 @@ startTimer = () => {
 }
 startTimer();
 
-// 6. we stop the timer if the game is finished
+// 6. Stop the timer if the game is finished
 stopTimer = () => {
     clearInterval(liveTimer);
     timeDuration = timer.innerHTML;
 }
 
-// 7. we reset the timer
+// 7. Reset the timer
 resetTimer = () => {
     seconds = 0;
     minutes = 0;
@@ -161,7 +160,7 @@ resetTimer = () => {
     clearInterval(liveTimer);
 }
 
-// 8. Reset timer, moves number, rating and shuffle cards at the beginnig of a game
+// 8. Reset all components at the beginning of a game
 function resetGame() {
     // shuffle cards
     cards = shuffle(cards);
@@ -178,7 +177,7 @@ function resetGame() {
     resetTimer();
 }
 
-// 9. Adds a click event on refresh (restart) element
+// 9. Add a click event on refresh (restart) element
 document.querySelector('.restart').addEventListener('click', resetGame);
 
 // 10. Create modal elements
@@ -186,7 +185,7 @@ createHtmlModal = () => {
     const container = document.querySelector('.container');
     const modal = document.createElement('div');
     modal.className = "overlay";
-    
+
     const div = document.createElement('div');
     div.className = "popup";
     modal.append(div);
@@ -218,15 +217,27 @@ createHtmlModal = () => {
     divChild.append(starRating);
 
     container.append(modal);
-    
+
 };
 createHtmlModal();
 
 // 11. Show output for moves, timeDuration and starRating
 messageScore = () => {
-    
+
     //showing move, rating, time on modal
     document.querySelector(".movesNumber").innerHTML = 'Moves : ' + moves;
     document.querySelector(".starRating").innerHTML = 'Stars : ' + starRating;
     document.querySelector(".timeDuration").innerHTML = 'Time :  ' + timeDuration;
+
+    closeModal();
+}
+
+// 12. Close modal
+function closeModal() {
+    closeCross = document.querySelector('.close');
+    showModal = document.querySelector('.overlay');
+
+    closeCross.addEventListener("click", function () {
+        showModal.classList.remove("show");
+    });
 }
