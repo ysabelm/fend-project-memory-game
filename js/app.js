@@ -16,7 +16,8 @@ shuffle = (array) => {
 // Declare all variables - Global scope
 const cardsList = document.querySelectorAll('.card'),
     cardsArray = Array.from(cardsList), // Shuffle function requires an array
-    deck = document.querySelector('.deck');
+    deck = document.querySelector('.deck'),
+    closeCross = document.querySelector('.close');
 
 let cards = shuffle(cardsArray), //shuffle the array of cards
     openedCards = [], // Set an empty array of opened cards
@@ -88,10 +89,9 @@ testMatching = () => {
 
         }, 600);
     }
-    if (matchedCards.length == 16) {
-        stopTimer();
-    }
+    stopTimer();
 }
+
 
 // 4.2 we need to count each moves in order to set a rating of stars
 movesCounter = () => {
@@ -170,3 +170,4 @@ function resetGame() {
 
 // 9. Adds a click event on refresh (restart) element
 document.querySelector('.restart').addEventListener('click', resetGame);
+
