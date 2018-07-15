@@ -21,15 +21,17 @@ const cardsList = document.querySelectorAll('.card'),
 let cards = shuffle(cardsArray), //shuffle the array of cards
     openedCards = [], // Set an empty array of opened cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
-    moves = 0; // Set the moves counter
-    counter = document.querySelector('.moves');
-    stars = document.querySelectorAll(".fa-star");
-
-const timer = document.querySelector(".timer");
-let seconds = 0,
+    moves = 0, // Set the moves counter
+    counter = document.querySelector('.moves'),
+    stars = document.querySelectorAll(".fa-star"),
+    seconds = 0,
     minutes = 0,
     hours = 0,
-    interval;
+    liveTimer,
+    modal = document.querySelector(".overlay");
+
+const timer = document.querySelector(".timer");
+
 
 
 // 1. Remove classes at the beginning of the game
@@ -44,20 +46,20 @@ removeClasses = () => {
 }
 removeClasses();
 
-// 3. Display the cards
+// 2. Display the cards
 displayCard = function () {
     this.classList.add('open');
     this.classList.add('show');
     this.classList.add('disable');
 };
 
-// 4. Adds a click event on each card using a loop
+// 3. Add a click event on each card using a loop
 for (card of cards) {
     card.addEventListener('click', displayCard);
     card.addEventListener('click', openCard);
 };
 
-// 5. Add and compare 2 cards - Start movesCounter
+// 4. Add and compare 2 cards - Start movesCounter
 function openCard() {
     openedCards.push(this);
     if (openedCards.length == 2) {
@@ -67,7 +69,7 @@ function openCard() {
     }
 };
 
-// 5.1  we set a test of matching cards otherwise we turn them over
+// 4.1  we set a test of matching cards otherwise we turn them over
 testMatching = () => {
     if (openedCards[0].innerHTML == openedCards[1].innerHTML) {
         openedCards[0].classList.toggle('match');
@@ -86,9 +88,12 @@ testMatching = () => {
 
         }, 600);
     }
+    if (matchedCards.length == 16) {
+        stopTimer();
+    }
 }
 
-// 5.2 we need to count each moves in order to set a rating of stars
+// 4.2 we need to count each moves in order to set a rating of stars
 movesCounter = () => {
     moves++
     counter.innerHTML = moves;
@@ -108,7 +113,7 @@ movesCounter = () => {
     }
 }
 
-// 6. we set a timer to get the game duration
+// 5. we set a timer to get the game duration
 startTimer = () => {
     liveTimer = setInterval(function () {
         if (seconds < 10) {
@@ -129,7 +134,7 @@ startTimer = () => {
 }
 startTimer();
 
-// 7. we reset the timer
+// 6. we reset the timer
 resetTimer = () => {
     seconds = 0;
     minutes = 0;
@@ -137,6 +142,14 @@ resetTimer = () => {
     timer.innerHTML = "0:00";
     clearInterval(liveTimer);
 }
+
+// 7. we stop the timer at the end of the game 
+stopTimer = () => {
+    if (matchedCards.length == 16) {
+        clearInterval(liveTimer);
+    };
+};
+stopTimer();
 
 // 8. Reset timer, moves number, rating and shuffle cards at the beginnig of a game
 function resetGame() {
@@ -155,5 +168,5 @@ function resetGame() {
     resetTimer();
 }
 
-// 9. Adds an click event on refresh (restart) element
+// 9. Adds a click event on refresh (restart) element
 document.querySelector('.restart').addEventListener('click', resetGame);
