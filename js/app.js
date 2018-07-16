@@ -221,11 +221,8 @@ createHtmlModal = () => {
     buttonModal.className = 'button-modal';
     popup.append(buttonModal);
 
-    const cancelButton = document.createElement('button');
-    cancelButton.className = 'cancel';
-    buttonModal.append(cancelButton);
-
     const replayButton = document.createElement('button');
+    replayButton.innerHTML = 'Play Again!'
     replayButton.className = 'replay';
     buttonModal.append(replayButton);
 
