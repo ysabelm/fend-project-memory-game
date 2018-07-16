@@ -159,7 +159,14 @@ h1 {
   
 .popup h2 {
 	margin-top: 0;
-	text-align: center;
+    text-align: center;
+    font-size: 20px;
+}
+
+.popup p {
+    color: #aa7ecd;
+    text-align: center;
+    font-size: 30px;
 }
 
 .popup .close {
