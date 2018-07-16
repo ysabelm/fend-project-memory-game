@@ -188,7 +188,7 @@ createHtmlModal = () => {
     div.className = "popup";
     modal.append(div);
 
-    const p = document.createElement('h2');
+    const h2 = document.createElement('h2');
     h2.innerHTML = "Bravo! You did it!";
     div.append(h2);
 
