@@ -23,29 +23,27 @@ let cards = shuffle(cardsArray), //shuffle the array of cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
     moves = 0, // Set the moves counter to empty
     counter = document.querySelector('.moves'),
-    stars = document.querySelectorAll('.fa-star');
-
+    //stars = document.querySelectorAll('.fa-star');
+    stars = document.querySelectorAll('.stars li');
 
 const timer = document.querySelector('.timer');
 
 let seconds = 0,
     minutes = 0,
     hours = 0,
-    interval,
-    timeDuration,
-    starRating = document.querySelector('.stars').innerHTML,
-
+    liveTimer,
+    timeDuration;
 
 // 1. Remove classes at the beginning of the game
-    removeClasses = () => {
-        for (card of cards) {
-            deck.innerHTML = "";
-            [].forEach.call(cards, function (item) {
-                deck.appendChild(item);
-            });
-            card.classList.remove('show', 'open', 'match', 'disable');
-        }
+removeClasses = () => {
+    for (card of cards) {
+        deck.innerHTML = "";
+        [].forEach.call(cards, function (item) {
+            deck.appendChild(item);
+        });
+        card.classList.remove('show', 'open', 'match', 'disable');
     }
+}
 removeClasses();
 
 // 2. Display the cards
@@ -109,7 +107,7 @@ movesCounter = () => {
     moves++
     counter.innerHTML = moves;
     // Set the rating with stars
-    if (moves > 10 && moves <= 15) {
+    if (moves > 8 && moves <= 15) {
         for (i = 0; i < 3; i++) {
             if (i > 1) {
                 stars[i].style.visibility = 'hidden';
@@ -190,13 +188,13 @@ createHtmlModal = () => {
     div.className = "popup";
     modal.append(div);
 
-    const p = document.createElement('p');
-    p.innerHTML = "Bravo! You did it!";
-    div.append(p);
-
-    const h2 = document.createElement('h2');
-    h2.innerHTML = "Score of the game";
+    const p = document.createElement('h2');
+    h2.innerHTML = "Bravo! You did it!";
     div.append(h2);
+
+    const h3 = document.createElement('h3');
+    h3.innerHTML = "Score of the game";
+    div.append(h3);
 
     const a = document.createElement('a');
     a.className = 'close';
@@ -227,6 +225,15 @@ createHtmlModal();
 
 // 11. Show output for moves, timeDuration and starRating
 messageScore = () => {
+
+    let starRating = 3;
+    if (moves <= 8) {
+        starRating = 3;
+    } else if (moves > 8 && moves <= 15) {
+        starRating = 2;
+    } else {
+        starRating = 1;
+    }
 
     //showing move, rating, time on modal
     document.querySelector(".movesNumber").innerHTML = 'Moves : ' + moves;
