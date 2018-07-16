@@ -23,8 +23,7 @@ let cards = shuffle(cardsArray), //shuffle the array of cards
     matchedCards = [], // This array helps to count the number of matched cards to know when the game is over
     moves = 0, // Set the moves counter to empty
     counter = document.querySelector('.moves'),
-    //stars = document.querySelectorAll('.fa-star');
-    stars = document.querySelectorAll('.stars li');
+    stars = document.querySelectorAll('.fa-star');
 
 const timer = document.querySelector('.timer');
 
@@ -184,39 +183,51 @@ createHtmlModal = () => {
     const modal = document.createElement('div');
     modal.className = "overlay";
 
-    const div = document.createElement('div');
-    div.className = "popup";
-    modal.append(div);
+    const popup = document.createElement('div');
+    popup.className = "popup";
+    modal.append(popup);
 
     const h2 = document.createElement('h2');
     h2.innerHTML = "Bravo! You did it!";
-    div.append(h2);
+    popup.append(h2);
 
     const h3 = document.createElement('h3');
     h3.innerHTML = "Score of the game";
-    div.append(h3);
+    popup.append(h3);
 
     const a = document.createElement('a');
     a.className = 'close';
     a.href = '#';
     a.innerHTML = 'x';
-    div.append(a);
+    popup.append(a);
 
-    const divChild = document.createElement('div');
-    divChild.className = 'result-score';
-    div.append(divChild);
+    const resultScore = document.createElement('div');
+    resultScore.className = 'result-score';
+    popup.append(resultScore);
 
     const movesNumber = document.createElement('p');
     movesNumber.className = 'movesNumber';
-    divChild.append(movesNumber);
+    resultScore.append(movesNumber);
 
     const timeDuration = document.createElement('p');
     timeDuration.className = 'timeDuration';
-    divChild.append(timeDuration);
+    resultScore.append(timeDuration);
 
     const starRating = document.createElement('p');
     starRating.className = 'starRating';
-    divChild.append(starRating);
+    resultScore.append(starRating);
+
+    const buttonModal = document.createElement('div');
+    buttonModal.className = 'button-modal';
+    popup.append(buttonModal);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.className = 'cancel';
+    buttonModal.append(cancelButton);
+
+    const replayButton = document.createElement('button');
+    replayButton.className = 'replay';
+    buttonModal.append(replayButton);
 
     container.append(modal);
 
@@ -252,3 +263,11 @@ function closeModal() {
         showModal.classList.remove("show");
     });
 }
+
+// 13. Replay Game
+function replayGame() {
+    resetGame();
+    showModal = document.querySelector('.overlay');
+    showModal.classList.toggle('hide');
+}
+document.querySelector('.replay').addEventListener('click', replayGame);
