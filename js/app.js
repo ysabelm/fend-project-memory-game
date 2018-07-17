@@ -62,7 +62,7 @@ for (card of cards) {
 function openCard() {
     openedCards.push(this);
 
-    let showModal = document.querySelector('.overlay');
+    const modal = document.querySelector('.overlay');
 
     if (openedCards.length == 2) {
         // Compare the 2 cards
@@ -71,7 +71,7 @@ function openCard() {
     }
     if (matchedCards.length === 16) {
 
-        showModal.classList.add('show');
+        modal.classList.toggle('show');
 
         stopTimer();
         messageScore();
@@ -248,23 +248,25 @@ messageScore = () => {
     document.querySelector(".starRating").innerHTML = 'Stars : ' + starRating;
     document.querySelector(".timeDuration").innerHTML = 'Time :  ' + timeDuration;
 
-    closeModal();
 }
 
-// 12. Close modal
-function closeModal() {
-    closeCross = document.querySelector('.close');
-    showModal = document.querySelector('.overlay');
-
-    closeCross.addEventListener("click", function () {
-        showModal.classList.remove("show");
+// 12. close modal with cross
+document.querySelector('.close').addEventListener("click", () => {
+        modal.classList.remove("show");
     });
+
+// 13. Close modal with button play again
+function closeModal() {
+    modal = document.querySelector('.overlay');
+    modal.classList.remove("show");
 }
 
-// 13. Replay Game
+// 14. Replay Game
 function replayGame() {
+    closeModal();
     resetGame();
-    showModal = document.querySelector('.overlay');
-    showModal.classList.toggle('hide');
+    //modal = document.querySelector('.overlay');
+    //modal.classList.toggle('hide');
+    startTimer();
 }
 document.querySelector('.replay').addEventListener('click', replayGame);
