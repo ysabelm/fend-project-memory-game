@@ -96,7 +96,7 @@ testMatching = () => {
 
             openedCards = [];
 
-        }, 600);
+        }, 1000);
     }
 }
 
@@ -159,6 +159,9 @@ resetTimer = () => {
 
 // 8. Reset all components at the beginning of a game
 function resetGame() {
+
+    // reset the matched cards array
+    matchedCards = [];
     // shuffle cards
     cards = shuffle(cards);
     // remove all classes from each card
@@ -170,8 +173,10 @@ function resetGame() {
     for (var i = 0; i < stars.length; i++) {
         stars[i].style.visibility = "visible";
     }
-    //reset timer
+    // reset timer
     resetTimer();
+    // start timer
+    startTimer();
 }
 
 // 9. Add a click event on refresh (restart) element
@@ -194,12 +199,6 @@ createHtmlModal = () => {
     const h3 = document.createElement('h3');
     h3.innerHTML = "Score of the game";
     popup.append(h3);
-
-    const a = document.createElement('a');
-    a.className = 'close';
-    a.href = '#';
-    a.innerHTML = 'x';
-    popup.append(a);
 
     const resultScore = document.createElement('div');
     resultScore.className = 'result-score';
@@ -243,30 +242,25 @@ messageScore = () => {
         starRating = 1;
     }
 
-    //showing move, rating, time on modal
+    //showing moves number, rating, time on modal
     document.querySelector(".movesNumber").innerHTML = 'Moves : ' + moves;
     document.querySelector(".starRating").innerHTML = 'Stars : ' + starRating;
     document.querySelector(".timeDuration").innerHTML = 'Time :  ' + timeDuration;
 
 }
 
-// 12. close modal with cross
-document.querySelector('.close').addEventListener("click", () => {
-        modal.classList.remove("show");
-    });
-
-// 13. Close modal with button play again
+// 12. Close modal with button play again
 function closeModal() {
+    resetGame();
     modal = document.querySelector('.overlay');
     modal.classList.remove("show");
 }
 
-// 14. Replay Game
+// 13. Replay Game
 function replayGame() {
     closeModal();
     resetGame();
-    //modal = document.querySelector('.overlay');
-    //modal.classList.toggle('hide');
     startTimer();
 }
+
 document.querySelector('.replay').addEventListener('click', replayGame);
