@@ -1,20 +1,23 @@
 # Memory Game Project
+Project of Udacity FEND program - Web Programming with JavaScript.
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Installation](#installation)
+* [Game](#game)
+* [Built With](#builtwith)
 
-## Instructions
+## Installation
+Download or clone the code on a computer. Open a text editor and use localhost http web server command tool.
+See https://developer.mozilla.org/en-US/docs/Learn/Common_questions/set_up_a_local_testing_server
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
 
-To get started, open `js/app.js` and start building out the app's functionality
+## Game
+It's a game based on memorization and rapidity: 16 cards you have to pair (8 pairs). Each two clicked cards, if they don't match, they turn over. The goal is to complete the game as quicly as possible in order to get a good score.
+Each time you replay or reset, the cards are shuffled, the timer, the stars&moves numbers are set to 0.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
-
-## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
-
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+## Built With
+Languages
+HTML
+CSS
+JS
